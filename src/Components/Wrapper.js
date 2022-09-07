@@ -5,7 +5,7 @@ export const Wrapper = styled.section`
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    width: 300px;
+    max-width: 300px;
     margin: 30px auto;
     padding: 20px 30px;
     background-color: ${({theme})=>theme.bgc.primary};
@@ -20,5 +20,5 @@ export const Wrapper = styled.section`
         text-align:right;
         padding: 10px 0;
         min-height: 20px;
-    }
+    } 
 `
