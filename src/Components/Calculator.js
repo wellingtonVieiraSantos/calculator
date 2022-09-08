@@ -14,23 +14,28 @@ const Calculator = () => {
     const [firstNum, setFirstNum] = useState(0)
     const [result, setResult] = useState(0)
     const [operator, setOperator] = useState()
+    const [error, setError] = useState('')
 
     
     const handleNum = e =>{
-        if(num < 99999999){
-            num ? setNum(num + e.target.value) : setNum(e.target.value)
+        if(error){
+            handleResetAll()
+        }
+        if(num < 99999999 ){
+            num ? setNum(parseFloat(num + e.target.value)) : setNum(parseFloat(e.target.value))
         } 
         if(result){
             handleResetAll()
-            setNum(e.target.value)
+            setNum(parseFloat(e.target.value))
         }
     }
-
+    
     const handlePorcentage = () =>{
         setNum(num/100)
     }
-
+    
     const handleResetAll = () => {
+        setError('')
         setNum(0)
         setFirstNum(0)
         setOperator(null)
@@ -38,7 +43,7 @@ const Calculator = () => {
     }
 
     const handleReset = () => {
-        setNum(0)
+        result ? setResult(0) : setNum(0)
     }
 
     const handleChangeSignal = () => {
@@ -65,7 +70,7 @@ const Calculator = () => {
     }
 
     const handleFloat = () => {
-        if(!num.includes('.')){
+        if(!(num+'').includes('.')){
         setNum(prevNum => prevNum + '.')
         }
     }
@@ -73,16 +78,20 @@ const Calculator = () => {
     const handleCalculator = () =>{
         switch (operator) {
             case '/':
-                setResult(parseFloat(firstNum) / parseFloat(num))
+                if(num == 0){
+                    setError('ERROR')
+                }else{
+                    setResult(firstNum / num)
+                }
                 break;
             case 'X':
-                setResult(parseFloat(firstNum) * parseFloat(num))
+                setResult(firstNum * num)
                 break;
             case '+':
-                setResult(parseFloat(firstNum) + parseFloat(num))
+                setResult(firstNum + num)
                 break;
             case '-':
-                setResult(parseFloat(firstNum) - parseFloat(num))
+                setResult(firstNum - num)
                 break;
         }
     }
@@ -101,7 +110,11 @@ const Calculator = () => {
             : (operator && <span>{format(firstNum)} {operator} {num} =</span>)
             }
         </p>
-        <Title >{result ? format(result) : num}</Title>
+
+        <Title >{!error ?
+            result ? format(result) : num 
+        :   error
+        }</Title>
 
         <table>
             <tbody>
